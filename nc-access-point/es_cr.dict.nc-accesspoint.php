@@ -11,7 +11,7 @@ Dict::Add('ES CR', 'Spanish', 'Español, Castellano', array(
 	'Class:AccessPoint+' => 'Access Point',
 	'Class:AccessPoint/Attribute:type' => 'Access Point',
 	'Class:AccessPoint/Attribute:type+' => 'Access Point',
-	'Class:AccessPoint/Attribute:ssid_list' => 'SSID asociados al AP',
+	'Class:AccessPoint/Attribute:ssid_list' => 'SSIDs asociados al AP',
 	'Class:AccessPoint/Attribute:ssid_list+' => 'SSIDs asociados al AP',
 ));
 ?>
