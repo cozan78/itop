@@ -1,0 +1,640 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<itop_design xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0">
+  <classes>
+    <class id="Room" _delta="define">
+      <parent>cmdbAbstractObject</parent>
+      <properties>
+        <category>bizmodel,searchable</category>
+        <abstract>false</abstract>
+        <key_type>autoincrement</key_type>
+        <db_table>room</db_table>
+        <db_key_field>id</db_key_field>
+        <db_final_class_field/>
+        <naming>
+          <attributes>
+            <attribute id="name"/>
+          </attributes>
+        </naming>
+        <display_template/>
+        <icon>images/room.png</icon>
+        <reconciliation>
+          <attributes>
+            <attribute id="name"/>
+            <attribute id="location_id"/>
+            <attribute id="location_name"/>
+          </attributes>
+        </reconciliation>
+      </properties>
+      <fields>
+        <field id="name" xsi:type="AttributeString">
+          <sql>name</sql>
+          <default_value/>
+          <is_null_allowed>false</is_null_allowed>
+        </field>
+        <field id="status" xsi:type="AttributeEnum">
+          <values>
+            <value id="active">active</value>
+            <value id="inactive">inactive</value>
+          </values>
+          <sql>status</sql>
+          <default_value>active</default_value>
+          <is_null_allowed>true</is_null_allowed>
+          <display_style>list</display_style>
+        </field>
+        <field id="location_id" xsi:type="AttributeExternalKey">
+          <sql>location_id</sql>
+          <target_class>Location</target_class>
+          <is_null_allowed>false</is_null_allowed>
+          <on_target_delete>DEL_MANUAL</on_target_delete>
+        </field>
+        <field id="location_name" xsi:type="AttributeExternalField">
+          <extkey_attcode>location_id</extkey_attcode>
+          <target_attcode>name</target_attcode>
+        </field>
+        <field id="physicaldevice_list" xsi:type="AttributeLinkedSet">
+          <linked_class>PhysicalDevice</linked_class>
+          <ext_key_to_me>room_id</ext_key_to_me>
+          <edit_mode>add_only</edit_mode>
+          <count_min>0</count_min>
+          <count_max>0</count_max>
+        </field>
+        <field id="person_list" xsi:type="AttributeLinkedSet">
+          <linked_class>Person</linked_class>
+          <ext_key_to_me>room_id</ext_key_to_me>
+          <edit_mode>add_only</edit_mode>
+          <count_min>0</count_min>
+          <count_max>0</count_max>
+        </field>
+			</fields>
+      <methods>
+      </methods>
+      <presentation>
+        <details>
+          <items>
+            <item id="name">
+              <rank>10</rank>
+            </item>
+            <item id="status">
+              <rank>20</rank>
+            </item>
+            <item id="location_id">
+              <rank>30</rank>
+            </item>
+						<item id="physicaldevice_list">
+              <rank>40</rank>
+            </item>
+            <item id="person_list">
+              <rank>50</rank>
+            </item>
+          </items>
+        </details>
+        <search>
+          <items>
+            <item id="name">
+              <rank>10</rank>
+            </item>
+            <item id="status">
+              <rank>20</rank>
+            </item>
+            <item id="location_id">
+              <rank>30</rank>
+            </item>
+          </items>
+        </search>
+        <list>
+          <items>
+            <item id="name">
+              <rank>10</rank></item>
+            <item id="status">
+              <rank>20</rank>
+            </item>
+            <item id="location_id">
+              <rank>30</rank>
+            </item>
+          </items>
+        </list>
+      </presentation>
+    </class>
+		<!--  Modification for PhysicalDevice class -->
+		<class id="PhysicalDevice" _delta="must_exist">		
+      <properties>
+				<reconciliation>
+          <attributes>
+            <attribute id="room_id"/>
+            <attribute id="room_name"/>
+          </attributes>
+        </reconciliation>
+      </properties>		
+      <fields>
+				<field id="room_id" xsi:type="AttributeExternalKey" _delta="define">
+          <filter><![CDATA[SELECT Room WHERE Room.location_id= :this->location_id]]></filter>
+          <dependencies>
+            <attribute id="location_id"/>
+          </dependencies>
+					<sql>room_id</sql>
+					<target_class>Room</target_class>
+					<is_null_allowed>true</is_null_allowed>
+					<on_target_delete>DEL_MANUAL</on_target_delete>
+          <allow_target_creation>true</allow_target_creation>
+				</field>
+        <field id="room_name" xsi:type="AttributeExternalField" _delta="define">
+          <extkey_attcode>room_id</extkey_attcode>
+          <target_attcode>name</target_attcode>
+        </field>
+			</fields>
+		</class>
+		<!-- Modify entry fields in several device types -->
+		<class id="NetworkDevice" _delta="must_exist">		
+			 <presentation>
+				<details>
+					<items>
+						<item id="col:col1">
+							<rank>80</rank>
+							<items>
+								<item id="fieldset:Server:baseinfo">
+									<rank>80</rank>
+									<items>
+										<item id="room_id" _delta="define">
+											<rank>53</rank>
+										</item>
+									</items>
+								</item>
+							</items>
+						</item>
+					</items>
+				</details>
+				<search>
+					<items>
+						<item id="room_id" _delta="define">
+							<rank>53</rank>
+						</item>
+					</items>
+				</search>
+				<list>
+					<items>
+						<item id="room_id" _delta="define">
+							<rank>53</rank>
+						</item>
+					</items>
+				</list>
+			</presentation>
+		</class>
+		<!--  Modification for Scanner class -->
+		<class id="Scanner" _delta="must_exist">		
+			 <presentation>
+				<details>
+					<items>
+										<item id="room_id" _delta="define">
+											<rank>53</rank>
+										</item>
+					</items>
+				</details>
+				<search>
+					<items>
+						<item id="room_id" _delta="define">
+							<rank>53</rank>
+						</item>
+					</items>
+				</search>
+				<list>
+					<items>
+						<item id="room_id" _delta="define">
+							<rank>53</rank>
+						</item>
+					</items>
+				</list>
+			</presentation>
+		</class>
+		<!--  Modification for Scanner class -->
+		<class id="StabilizerUPS" _delta="must_exist">		
+			 <presentation>
+				<details>
+					<items>
+										<item id="room_id" _delta="define">
+											<rank>53</rank>
+										</item>
+					</items>
+				</details>
+				<search>
+					<items>
+						<item id="room_id" _delta="define">
+							<rank>53</rank>
+						</item>
+					</items>
+				</search>
+				<list>
+					<items>
+						<item id="room_id" _delta="define">
+							<rank>53</rank>
+						</item>
+					</items>
+				</list>
+			</presentation>
+		</class>
+		<!--  Modification for Enclosure class -->
+		<class id="Enclosure" _delta="must_exist">		
+			 <presentation>
+				<details>
+					<items>
+										<item id="room_id" _delta="define">
+											<rank>63</rank>
+										</item>
+					</items>
+				</details>
+				<search>
+					<items>
+						<item id="room_id" _delta="define">
+							<rank>63</rank>
+						</item>
+					</items>
+				</search>
+				<list>
+					<items>
+						<item id="room_id" _delta="define">
+							<rank>63</rank>
+						</item>
+					</items>
+				</list>
+			</presentation>
+		</class>
+		<!--  Modification for Server class -->
+		<class id="Server" _delta="must_exist">		
+			 <presentation>
+				<details>
+					<items>
+						<item id="col:col1">
+							<rank>80</rank>
+							<items>
+								<item id="fieldset:Server:baseinfo">
+									<rank>80</rank>
+									<items>
+										<item id="room_id" _delta="define">
+											<rank>53</rank>
+										</item>
+									</items>
+								</item>
+							</items>
+						</item>
+					</items>
+				</details>
+				<search>
+					<items>
+						<item id="room_id" _delta="define">
+							<rank>53</rank>
+						</item>
+					</items>
+				</search>
+				<list>
+					<items>
+						<item id="room_id" _delta="define">
+							<rank>53</rank>
+						</item>
+					</items>
+				</list>
+			</presentation>
+		</class>
+		<!--  Modification for PC class -->
+		<class id="PC" _delta="must_exist">		
+			 <presentation>
+				<details>
+					<items>
+						<item id="col:col1">
+							<rank>80</rank>
+							<items>
+								<item id="fieldset:Server:baseinfo">
+									<rank>80</rank>
+									<items>
+										<item id="room_id" _delta="define">
+											<rank>53</rank>
+										</item>
+									</items>
+								</item>
+							</items>
+						</item>
+					</items>
+				</details>
+				<search>
+					<items>
+						<item id="room_id" _delta="define">
+							<rank>53</rank>
+						</item>
+					</items>
+				</search>
+				<list>
+					<items>
+						<item id="room_id" _delta="define">
+							<rank>53</rank>
+						</item>
+					</items>
+				</list>
+			</presentation>
+		</class>
+		<!--  Modification for Person class -->
+		<class id="Person" _delta="must_exist">		
+      <properties>
+				<reconciliation>
+          <attributes>
+            <attribute id="room_id"/>
+            <attribute id="room_name"/>
+          </attributes>
+        </reconciliation>
+      </properties>		
+      <fields>
+				<field id="room_id" xsi:type="AttributeExternalKey" _delta="define">
+          <filter><![CDATA[SELECT Room WHERE Room.location_id= :this->location_id]]></filter>
+          <dependencies>
+            <attribute id="location_id"/>
+          </dependencies>
+					<sql>room_id</sql>
+					<target_class>Room</target_class>
+					<is_null_allowed>true</is_null_allowed>
+					<on_target_delete>DEL_MANUAL</on_target_delete>
+          <allow_target_creation>true</allow_target_creation>
+				</field>
+        <field id="room_name" xsi:type="AttributeExternalField" _delta="define">
+          <extkey_attcode>room_id</extkey_attcode>
+          <target_attcode>name</target_attcode>
+        </field>
+      </fields>		  
+			 <presentation>
+        <details>
+					<items>
+						<item id="col:col1">
+							<rank>80</rank>
+							<items>
+								<item id="fieldset:Person:info">
+									<rank>80</rank>
+									<items>
+										<item id="room_id" _delta="define">
+											<rank>53</rank>
+										</item>
+									</items>
+								</item>
+							</items>
+						</item>
+					</items>
+        </details>
+        <search>
+          <items>
+            <item id="room_id" _delta="define">
+              <rank>55</rank>
+            </item>
+          </items>
+        </search>
+        <list>
+          <items>
+            <item id="room_id" _delta="define">
+              <rank>45</rank>
+            </item>
+          </items>
+        </list>
+      </presentation>
+		</class>
+	
+		<!--  Modification for Printer class -->
+		<class id="Printer" _delta="must_exist">		
+			 <presentation>
+				<details>
+					<items>
+						<item id="col:col1">
+							<rank>80</rank>
+							<items>
+								<item id="fieldset:Server:baseinfo">
+									<rank>80</rank>
+									<items>
+										<item id="room_id" _delta="define">
+											<rank>53</rank>
+										</item>
+									</items>
+								</item>
+							</items>
+						</item>
+					</items>
+				</details>
+				<search>
+					<items>
+						<item id="room_id" _delta="define">
+							<rank>53</rank>
+						</item>
+					</items>
+				</search>
+				<list>
+					<items>
+						<item id="room_id" _delta="define">
+							<rank>53</rank>
+						</item>
+					</items>
+				</list>
+			</presentation>
+		</class>
+		<!--  Modification for NAS class -->
+		<class id="NAS" _delta="must_exist">		
+			 <presentation>
+				<details>
+					<items>
+						<item id="col:col1">
+							<rank>80</rank>
+							<items>
+								<item id="fieldset:Server:baseinfo">
+									<rank>80</rank>
+									<items>
+										<item id="room_id" _delta="define">
+											<rank>53</rank>
+										</item>
+									</items>
+								</item>
+							</items>
+						</item>
+					</items>
+				</details>
+				<search>
+					<items>
+						<item id="room_id" _delta="define">
+							<rank>53</rank>
+						</item>
+					</items>
+				</search>
+				<list>
+					<items>
+						<item id="room_id" _delta="define">
+							<rank>53</rank>
+						</item>
+					</items>
+				</list>
+			</presentation>
+		</class>
+		<!--  Modification for PDU class -->
+		<class id="PDU" _delta="must_exist">		
+			<presentation>
+				<details>
+					<items>
+						<item id="room_id" _delta="define">
+							<rank>55</rank>
+						</item>
+					</items>
+				</details>
+				<search>
+					<items>
+						<item id="room_id" _delta="define">
+							<rank>55</rank>
+						</item>
+					</items>
+				</search>
+				<list>
+					<items>
+						<item id="room_id" _delta="define">
+							<rank>45</rank>
+						</item>
+					</items>
+				</list>
+			</presentation>
+		</class>
+		<!--  Modification for PowerSource class -->
+		<class id="PowerSource" _delta="must_exist">		
+			<presentation>
+				<details>
+					<items>
+						<item id="room_id" _delta="define">
+							<rank>55</rank>
+						</item>
+					</items>
+				</details>
+				<search>
+					<items>
+						<item id="room_id" _delta="define">
+							<rank>55</rank>
+						</item>
+					</items>
+				</search>
+				<list>
+					<items>
+						<item id="room_id" _delta="define">
+							<rank>45</rank>
+						</item>
+					</items>
+				</list>
+			</presentation>
+		</class>
+		<!--  Modification for PowerConnection class -->
+		<class id="PowerConnection" _delta="must_exist">		
+			<presentation>
+				<details>
+					<items>
+						<item id="room_id" _delta="define">
+							<rank>55</rank>
+						</item>
+					</items>
+				</details>
+				<search>
+					<items>
+						<item id="room_id" _delta="define">
+							<rank>55</rank>
+						</item>
+					</items>
+				</search>
+				<list>
+					<items>
+						<item id="room_id" _delta="define">
+							<rank>45</rank>
+						</item>
+					</items>
+				</list>
+			</presentation>
+		</class>
+		<!--  Modification for Locations -->
+		<class id="Location" _delta="must_exist">		
+      <fields>
+        <field id="room_list" xsi:type="AttributeLinkedSet" _delta="define">
+          <linked_class>Room</linked_class>
+          <ext_key_to_me>location_id</ext_key_to_me>
+          <edit_mode>add_only</edit_mode>
+          <count_min>0</count_min>
+          <count_max>0</count_max>
+        </field>
+      </fields>		  
+			 <presentation>
+        <details>
+					<items>
+            <item id="room_list">
+              <rank>95</rank>
+            </item>	 
+          </items>
+        </details>
+        <search>
+        </search>
+      </presentation>
+		</class>
+	<!--  Modification of Racks -->
+	<class id="Rack" _delta="must_exist">		
+			 <presentation>
+				<details>
+					<items>
+						<item id="room_id" _delta="define">
+							<rank>55</rank>
+						</item>
+					</items>
+				</details>
+				<search>
+					<items>
+						<item id="room_id" _delta="define">
+							<rank>55</rank>
+						</item>
+					</items>
+				</search>
+				<list>
+					<items>
+						<item id="room_id" _delta="define">
+							<rank>55</rank>
+						</item>
+					</items>
+				</list>
+			</presentation>
+		</class>
+	</classes>
+	<!--  Modification of the menu -->
+	<menus>
+    <menu id="Location" xsi:type="DashboardMenuNode" _delta="redefine">
+      <rank>3</rank>
+      <parent>ConfigManagement</parent>
+      <definition>
+        <layout>DashboardLayoutOneCol</layout>
+        <title/>
+        <cells>
+          <cell id="0">
+            <rank>0</rank>
+            <dashlets>
+              <dashlet id="1" xsi:type="DashletHeaderDynamic">
+                <rank>1</rank>
+                <title>Menu:Location</title>
+                <icon>itop-config-mgmt/images/location.png</icon>
+                <subtitle>Menu:Location:Count</subtitle>
+                <query>SELECT Location</query>
+                <group_by>status</group_by>
+                <values>active,inactive</values>
+              </dashlet>
+              <dashlet id="2" xsi:type="DashletBadge">
+                <rank>2</rank>
+                <class>Location</class>
+              </dashlet>
+              <dashlet id="3" xsi:type="DashletBadge">
+                <rank>3</rank>
+                <class>Room</class>
+              </dashlet>
+            </dashlets>
+          </cell>
+        </cells>
+      </definition>
+    </menu>
+    <menu id="NewRoom" xsi:type="NewObjectMenuNode" _delta="define">
+      <rank>5</rank>
+      <parent>Location</parent>
+      <class>Room</class>
+    </menu>
+    <menu id="SearchRoom" xsi:type="SearchMenuNode" _delta="define">
+      <rank>6</rank>
+      <parent>Location</parent>
+      <class>Room</class>
+    </menu>
+	</menus>
+</itop_design>
+

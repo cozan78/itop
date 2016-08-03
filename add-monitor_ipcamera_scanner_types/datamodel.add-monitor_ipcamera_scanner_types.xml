@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<itop_design xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0">
+  <classes>
+    <class id="Model" _delta="must_exist">
+      <fields>
+        <field id="type" xsi:type="AttributeEnum" _delta="redefine">
+          <values>
+            <value>NetworkDevice</value>
+            <value>Server</value>
+            <value>SANSwitch</value>
+            <value>StorageSystem</value>
+            <value>Rack</value>
+            <value>Enclosure</value>
+            <value>PC</value>
+            <value>Tablet</value>
+            <value>Telephone</value>
+            <value>MobilePhone</value>
+            <value>Monitor</value>
+            <value>Printer</value>
+            <value>DiskArray</value>
+            <value>NAS</value>
+            <value>TapeLibrary</value>
+            <value>IPPhone</value>
+            <value>Peripheral</value>
+            <value>PowerSource</value>
+            <value>PDU</value>
+            <value>Radio</value>
+            <value>Scanner</value>
+            <value>IP Camera</value>
+            <value>Access Point</value>
+            <value>Production Printer</value>
+            <value>Radio Tetra</value>
+          </values>
+          <sql>type</sql>
+          <default_value/>
+          <is_null_allowed>false</is_null_allowed>
+          <display_style>list</display_style>
+        </field>
+      </fields>
+      <methods/>
+      <presentation />
+    </class>
+  </classes>
+<menus>
+</menus>
+  <profiles>
+  </profiles>
+</itop_design>
