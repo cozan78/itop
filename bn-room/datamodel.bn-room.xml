@@ -625,6 +625,16 @@
         </cells>
       </definition>
     </menu>
+    <menu id="NewLocation" xsi:type="NewObjectMenuNode" _delta="define">
+      <rank>3</rank>
+      <parent>Location</parent>
+      <class>Location</class>
+    </menu>
+    <menu id="SearchLocation" xsi:type="SearchMenuNode" _delta="define">
+      <rank>4</rank>
+      <parent>Location</parent>
+      <class>Location</class>
+    </menu>
     <menu id="NewRoom" xsi:type="NewObjectMenuNode" _delta="define">
       <rank>5</rank>
       <parent>Location</parent>
